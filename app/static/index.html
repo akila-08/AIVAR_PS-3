@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guardrails Console</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    .tool-help{margin-top:10px;padding:11px 13px;border-left:3px solid var(--blue);background:#eef5f3;font-size:11px;color:var(--muted);line-height:1.45}.tool-help strong{color:var(--ink);font:10px 'DM Mono',monospace;text-transform:uppercase;margin-right:8px}.tool-help code{color:var(--ink);font:11px 'DM Mono',monospace}.tool-help p{margin:5px 0 0}.tool-help + label{margin-top:18px}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-mark">G</span>
+        <span><strong>Guardrails</strong><small>Action control plane</small></span>
+      </a>
+      <div class="status-pill"><span id="status-dot"></span><span id="status-text">Checking Supabase</span></div>
+    </header>
+
+    <section class="intro">
+      <div>
+        <p class="eyebrow">PS-3.1 / LIVE DECISIONING</p>
+        <h1>Keep risky actions<br><em>in human hands.</em></h1>
+        <p class="lede">Evaluate an agent action before it executes. Every decision is recorded for review.</p>
+      </div>
+      <div class="signal-card"><span class="signal-label">SYSTEM SIGNAL</span><strong>Pre-execution<br>protection active</strong><span class="signal-line"></span><small>Supabase-backed policy store</small></div>
+    </section>
+
+    <section class="workspace">
+      <div class="panel evaluate-panel">
+        <div class="panel-heading"><div><span class="kicker">01</span><h2>Evaluate action</h2></div><span class="method">POST /evaluate</span></div>
+        <form id="evaluate-form">
+          <label for="tool">Tool name</label>
+          <select id="tool">
+            <option value="db_delete">db_delete</option>
+            <option value="send_email">send_email</option>
+            <option value="read_file">read_file</option>
+          </select>
+          <div id="tool-help" class="tool-help"></div>
+          <label for="params">Parameters <span>JSON</span></label>
+          <textarea id="params" spellcheck="false">{"record_count": 500}</textarea>
+          <button class="primary" type="submit">Evaluate action <span>-&gt;</span></button>
+        </form>
+        <div id="decision" class="decision empty"><span class="decision-icon">?</span><div><strong>Awaiting an action</strong><p>Choose a tool and submit its parameters.</p></div></div>
+      </div>
+
+      <div class="panel reviews-panel">
+        <div class="panel-heading"><div><span class="kicker">02</span><h2>Human review</h2></div><span class="count" id="review-count">0</span></div>
+        <div id="review-list" class="review-list"><div class="blank-state">Pending reviews appear here<br>after an external action is flagged.</div></div>
+      </div>
+    </section>
+
+    <section class="panel audit-panel">
+      <div class="panel-heading"><div><span class="kicker">03</span><h2>Audit trail</h2></div><button class="text-button" id="refresh-audit" type="button">Refresh -&gt;</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Time</th><th>Tool</th><th>Outcome</th><th>Rule</th><th>Executed</th></tr></thead><tbody id="audit-body"><tr><td colspan="5" class="blank-state">No events loaded.</td></tr></tbody></table></div>
+    </section>
+
+    <footer><span>GUARDRAILS PLATFORM</span><span>FastAPI + Supabase</span><a href="/docs">API docs -&gt;</a></footer>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

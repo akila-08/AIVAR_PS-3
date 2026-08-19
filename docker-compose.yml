@@ -1,0 +1,8 @@
+services:
+  guardrail-api:
+    build: .
+    ports:
+      - "8080:8000"
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}

@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-API_BASE = os.environ.get("GUARDRAIL_API_URL", "http://localhost:8000").rstrip("/")
+API_BASE = os.environ.get("GUARDRAIL_API_URL", "https://ai-action-evaluator.onrender.com/").rstrip("/")
 load_dotenv()
 client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 

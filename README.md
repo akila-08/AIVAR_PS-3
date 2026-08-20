@@ -4,7 +4,8 @@
 
 This is my submission for PS-3.1. Below I explain what the problem statement asked for, what I actually built, why I made the technical decisions I made, and how each success criterion is satisfied.
 
-**Live deployment:** `https://ai-action-evaluator.onrender.com/` 
+**Live deployment:** *https://ai-action-evaluator.onrender.com/*
+
 **Demo UI:** open the URL above directly in a browser
 
 **Repo:** *https://github.com/akila-08/AIVAR_PS-3*

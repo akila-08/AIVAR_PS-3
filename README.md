@@ -95,22 +95,22 @@ python -m pytest tests/ -v
 ## 8. Screenshots
 
 **Demo UI — evaluating an action**
-`![Evaluate UI](screenshots/evaluate-ui.png)`
+![Evaluate UI](screenshots/evaluate-ui.png)
 
 **Demo UI — a blocked bulk delete**
-`![Blocked action](screenshots/blocked-action.png)`
+![Blocked action](screenshots/blocked-action.png)
 
 **Demo UI — an external email paused for HITL, with approve/deny buttons**
-`![HITL review](screenshots/hitl-review.png)`
+![HITL review](screenshots/hitl-review.png)
 
 **Live audit trail in the UI**
-`![Audit trail](screenshots/audit-trail.png)`
+![Audit trail](screenshots/audit-trail.png)
 
 **`GET /health` response, proving the deployment is live and the database is reachable**
-`![Health check](screenshots/health-check.png)`
+![Health check](screenshots/health-check.png)
 
 **`agent/demo_agent.py` console output — Gemini proposing real tool calls, guardrail deciding on them**
-`![Demo agent run](screenshots/demo-agent-run.png)`
+![Demo agent run](screenshots/demo-agent-run.png)
 
 
 ## 9. Architecture / tech stack summary

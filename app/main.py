@@ -6,10 +6,12 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from mangum import Mangum
 
-from .audit import get_audit_log, write_audit_record
+from .audit import get_audit_log, write_audit_record, write_review_audit_record
 from .supabase import get_client
 from .logging_config import configure_logging
+from .llm import LLMConfigurationError, LLMProposalError, propose_action
 from .models import ActionRequest, DecisionResponse, HealthResponse, ReviewResponse
+from .models import ScenarioRequest
 from .policies_store import load_policies
 from .policy_engine import evaluate
 from .reviews import create_pending_review, resolve_review
@@ -86,12 +88,26 @@ def evaluate_action(action: ActionRequest) -> DecisionResponse:
     )
 
 
+@app.post("/agent/propose", response_model=ActionRequest)
+def propose_agent_action(request: ScenarioRequest) -> ActionRequest:
+    try:
+        return propose_action(request.scenario)
+    except LLMConfigurationError as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    except LLMProposalError as exc:
+        raise HTTPException(status_code=502, detail=str(exc))
+
+
 @app.post("/guardrail/reviews/{review_id}/approve", response_model=ReviewResponse)
 def approve_review(review_id: str) -> ReviewResponse:
     try:
         item = resolve_review(review_id, approve=True)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc))
+    try:
+        write_review_audit_record(item, item["status"])
+    except Exception:
+        logger.exception("failed to audit human review", extra={"review_id": review_id})
     return ReviewResponse(review_id=review_id, status=item["status"])
 
 
@@ -101,6 +117,10 @@ def deny_review(review_id: str) -> ReviewResponse:
         item = resolve_review(review_id, approve=False)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc))
+    try:
+        write_review_audit_record(item, item["status"])
+    except Exception:
+        logger.exception("failed to audit human review", extra={"review_id": review_id})
     return ReviewResponse(review_id=review_id, status=item["status"])
 
 

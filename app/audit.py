@@ -23,6 +23,16 @@ def write_audit_record(action: dict, decision: Decision, executed: bool) -> str:
     return action_id
 
 
+def write_review_audit_record(review: dict, status: str) -> str:
+    """Record a review decision without claiming the action was executed."""
+    decision = Decision(
+        outcome=status,
+        matched_rule_id=None,
+        reason=review.get("reason", "") or f"Human review {status}.",
+    )
+    return write_audit_record(review["action"], decision, executed=False)
+
+
 def get_audit_log(date: str, limit: int = 50) -> list[dict]:
     start = f"{date}T00:00:00+00:00"
     end = f"{date}T23:59:59.999999+00:00"

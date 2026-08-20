@@ -6,7 +6,7 @@
   <title>Guardrails Console</title>
   <link rel="stylesheet" href="/static/styles.css">
   <style>
-    .tool-help{margin-top:10px;padding:11px 13px;border-left:3px solid var(--blue);background:#eef5f3;font-size:11px;color:var(--muted);line-height:1.45}.tool-help strong{color:var(--ink);font:10px 'DM Mono',monospace;text-transform:uppercase;margin-right:8px}.tool-help code{color:var(--ink);font:11px 'DM Mono',monospace}.tool-help p{margin:5px 0 0}.tool-help + label{margin-top:18px}
+    .tool-help{margin-top:10px;padding:11px 13px;border-left:3px solid var(--blue);background:#eef5f3;font-size:11px;color:var(--muted);line-height:1.45}.tool-help strong{color:var(--ink);font:10px 'DM Mono',monospace;text-transform:uppercase;margin-right:8px}.tool-help p{margin:5px 0 0}.tool-help + label{margin-top:18px}.scenario-form{border-bottom:1px solid var(--line);margin-bottom:20px;padding-bottom:20px}.scenario-form textarea{width:100%;min-height:82px;resize:vertical;border:1px solid var(--line);background:#f7f9f5;color:var(--ink);font:13px 'DM Mono',monospace;padding:12px;margin:8px 0 10px}.secondary{border:0;background:var(--blue);color:var(--ink);padding:13px 16px;font:600 12px 'Space Grotesk',sans-serif;cursor:pointer}.secondary span{float:right;margin-left:24px}.proposal{background:#eef5f3;border-left:3px solid var(--blue);padding:12px 14px;margin-bottom:20px;font-size:12px}.proposal.empty{color:var(--muted)}.proposal.error{border-color:var(--coral)}.proposal p{margin:8px 0 0;color:var(--muted);line-height:1.4}.proposal pre{background:var(--white);border:1px solid var(--line);padding:10px;overflow:auto;font:11px 'DM Mono',monospace;margin:9px 0 0}.policy-note{display:block;margin:-4px 0 12px;color:var(--muted);font-size:11px;line-height:1.4}.policy-note code{color:var(--ink);font:11px 'DM Mono',monospace}.action-status{display:block;min-height:18px;margin-top:8px;color:var(--muted);font:10px 'DM Mono',monospace}.primary:disabled,.secondary:disabled,.text-button:disabled,.review-actions button:disabled{cursor:wait;opacity:.58}.review-actions button[aria-busy="true"]{color:var(--ink)}
   </style>
 </head>
 <body>
@@ -31,6 +31,14 @@
     <section class="workspace">
       <div class="panel evaluate-panel">
         <div class="panel-heading"><div><span class="kicker">01</span><h2>Evaluate action</h2></div><span class="method">POST /evaluate</span></div>
+        <form id="scenario-form" class="scenario-form">
+          <label for="scenario">Describe the agent task</label>
+          <span class="policy-note">Note:Internal email domain: <code>internal.company.com</code>. Other domains require human review.</span>
+          <textarea id="scenario" maxlength="4000" spellcheck="true">Delete 500 stale rows from the analytics_events table because they are no longer needed.</textarea>
+          <button class="secondary" id="propose-button" type="submit">Ask Gemini for a proposal <span>-&gt;</span></button>
+          <span id="propose-status" class="action-status" aria-live="polite"></span>
+        </form>
+        <div id="proposal" class="proposal empty"><strong>No proposal yet</strong><p>Gemini's proposed tool call will appear here.</p></div>
         <form id="evaluate-form">
           <label for="tool">Tool name</label>
           <select id="tool">
@@ -40,8 +48,9 @@
           </select>
           <div id="tool-help" class="tool-help"></div>
           <label for="params">Parameters <span>JSON</span></label>
-          <textarea id="params" spellcheck="false">{"record_count": 500}</textarea>
-          <button class="primary" type="submit">Evaluate action <span>-&gt;</span></button>
+          <textarea id="params" spellcheck="false">{}</textarea>
+          <button class="primary" id="evaluate-button" type="submit">Evaluate proposed action <span>-&gt;</span></button>
+          <span id="evaluate-status" class="action-status" aria-live="polite"></span>
         </form>
         <div id="decision" class="decision empty"><span class="decision-icon">?</span><div><strong>Awaiting an action</strong><p>Choose a tool and submit its parameters.</p></div></div>
       </div>

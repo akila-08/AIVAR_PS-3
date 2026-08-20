@@ -4,5 +4,5 @@ supabase>=2.0
 python-dotenv>=1.0
 pydantic>=2
 pyyaml>=6
-anthropic>=0.40
+google-genai>=1.0
 requests>=2.31

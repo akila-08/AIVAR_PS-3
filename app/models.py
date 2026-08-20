@@ -8,6 +8,10 @@ class ActionRequest(BaseModel):
     params: dict[str, Any] = Field(default_factory=dict)
 
 
+class ScenarioRequest(BaseModel):
+    scenario: str = Field(min_length=1, max_length=4000)
+
+
 class DecisionResponse(BaseModel):
     outcome: str  # block | require_hitl | log_and_allow
     matched_rule_id: Optional[str] = None

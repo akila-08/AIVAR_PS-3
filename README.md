@@ -113,7 +113,7 @@ python -m pytest tests/ -v
 `![Demo agent run](screenshots/demo-agent-run.png)`
 
 
-## 10. Architecture / tech stack summary
+## 9. Architecture / tech stack summary
 
 | Layer | Choice |
 |---|---|
@@ -127,23 +127,8 @@ python -m pytest tests/ -v
 | Testing | pytest — pure unit tests + live Supabase integration tests |
 | Frontend | Static HTML/CSS/JS demo console served by the same FastAPI app |
 
-## 11. Future Improvements
+## 10. Future Improvements
 
 - No authentication on the API endpoint yet — for anything beyond demo/eval traffic, this needs a Lambda-authorizer-style check or an API key.
 - The bonus dry-run mode.
 
-
-## 12. Running it locally
-
-```bash
-pip install -r requirements-dev.txt
-export SUPABASE_URL=...
-export SUPABASE_SERVICE_ROLE_KEY=...
-uvicorn app.main:app --reload
-```
-
-Or with Docker:
-
-```bash
-docker compose up --build
-```
